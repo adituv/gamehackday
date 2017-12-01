@@ -25,6 +25,9 @@ public class GameController : MonoBehaviour {
 	private float Score;
 	public Text ScoreText;
 
+	private bool allowStartGame = true;
+	private float gameOverTime = 0.0f;
+	public float gameOverScreenMinimum = 2.0f;
 
 	bool overlayEnabled = true;
 	float startSpeed;
@@ -33,6 +36,9 @@ public class GameController : MonoBehaviour {
 	public bool IsRunning { get; private set; }
 
 	public void StartGame() {
+		if (!allowStartGame)
+			return;
+		
 		Player.Reset ();
 		Score = 0;
 
@@ -49,6 +55,8 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void GameOver() {
+		allowStartGame = false;
+		gameOverTime = Time.time;
 		IsRunning = false;
 		Player.StopImmediately ();
 		BackgroundMusic.Stop ();
@@ -99,6 +107,10 @@ public class GameController : MonoBehaviour {
 			if (Time.time - lastSpawn > 1 / (SpawnRate * GameSpeed)) {
 				SpawnObstacle ();
 				lastSpawn = Time.time;
+			}
+		} else {
+			if (Time.time - gameOverTime > gameOverScreenMinimum) {
+				allowStartGame = true;
 			}
 		}
 	}
