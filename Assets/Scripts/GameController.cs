@@ -22,6 +22,9 @@ public class GameController : MonoBehaviour {
 	public AudioSource BackgroundMusic;
 	public AudioSource GameOverSound;
 
+	private float Score;
+	public Text ScoreText;
+
 
 	bool overlayEnabled = true;
 	float startSpeed;
@@ -31,6 +34,7 @@ public class GameController : MonoBehaviour {
 
 	public void StartGame() {
 		Player.Reset ();
+		Score = 0;
 
 		List<GameObject> existingBlocks = new List<GameObject> ();
 		foreach (Transform block in BlockContainer) {
@@ -89,6 +93,8 @@ public class GameController : MonoBehaviour {
 		if (IsRunning) {
 			GameSpeed += GameAcceleration * Time.deltaTime;
 
+			Score += GameSpeed * Time.deltaTime;
+			ScoreText.text = "Score: " + (int)(Mathf.Floor (Score));
 
 			if (Time.time - lastSpawn > 1 / (SpawnRate * GameSpeed)) {
 				SpawnObstacle ();
