@@ -16,11 +16,12 @@ public class GameController : MonoBehaviour {
 	public Vector2 MinObstaclePosition;
 
 	public Transform BlockContainer;
-	public GameObject BlockPrefab;
+	public List<ObjectSpawner> Spawners;
 	public float SpawnRate = 0.3f;
 
 	public AudioSource BackgroundMusic;
 	public AudioSource GameOverSound;
+
 
 	bool overlayEnabled = true;
 	float startSpeed;
@@ -69,11 +70,10 @@ public class GameController : MonoBehaviour {
 	}
 
 	void SpawnObstacle() {
-		float rand = Random.value;
-		Vector3 pos = MinObstaclePosition + rand * (MaxObstaclePosition - MinObstaclePosition);
-		var block = Instantiate (BlockPrefab, BlockContainer);
-		block.GetComponent<BlockMover> ().Game = this;
-		block.transform.position = pos;
+		int rand = (int) Mathf.Floor (Random.value * Spawners.Count);
+		var spawnedObj = Spawners [rand].Spawn ();
+
+		spawnedObj.GetComponent<BlockMover> ().Game = this;
 	}
 
 	// Use this for initialization
