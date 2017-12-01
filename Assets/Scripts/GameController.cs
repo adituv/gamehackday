@@ -95,7 +95,7 @@ public class GameController : MonoBehaviour {
 		startSpeed = GameSpeed;
 		GameSpeed = 0.0f;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if (IsRunning) {
